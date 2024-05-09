@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Area;
 use App\Enums\CountryEmployment;
 use App\Enums\TypeDocument;
 use App\Models\Employee;
@@ -46,7 +47,10 @@ class EmployeeController extends Controller
             'middlename' => 'sometimes|required|alpha:ascii|max:50',
             'country_employment' => ['required', new Enum(CountryEmployment::class)],
             'type_document' => ['required', new Enum(TypeDocument::class)],
-            'document_number' => 'required|unique:employees,document_number|alpha|max:20'
+            'document_number' => 'required|string|regex:/^[A-Za-z0-9\-]+$/|unique:employees,document_number|max:20',
+            'email' => 'required|email|unique:employess,email|max:300',
+            'admission_date' => 'required|date|before_or_equal:today - 1 month',
+            'area' => ['required', new Enum(Area::class)],
         ]);
 
         if ($validate->fails()) {
@@ -97,8 +101,16 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required',
-            'description' => 'required'
+            'lastname' => 'required|alpha:ascii|max:20',
+            'second_surname' => 'required|alpha:ascii|max:20',
+            'name' => 'required|alpha:ascii|max:20',
+            'middlename' => 'sometimes|required|alpha:ascii|max:50',
+            'country_employment' => ['required', new Enum(CountryEmployment::class)],
+            'type_document' => ['required', new Enum(TypeDocument::class)],
+            'document_number' => 'required|string|regex:/^[A-Za-z0-9\-]+$/|max:20unique:employees,document_number,' . $employee,
+            'email' => 'required|email|max:300|unique:employess,email,' . $employee,
+            'admission_date' => 'required|date|before_or_equal:today - 1 month',
+            'area' => ['required', new Enum(Area::class)],
         ]);
 
         if ($validate->fails()) {
@@ -108,8 +120,6 @@ class EmployeeController extends Controller
                 'data' => $validate->errors(),
             ], 403);
         }
-
-        $employee = Employee::find($employee);
 
         if (is_null($employee)) {
             return response()->json([
@@ -134,8 +144,6 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $employee = Employee::find($employee);
-
         if (is_null($employee)) {
             return response()->json([
                 'status' => 'failed',

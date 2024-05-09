@@ -5,6 +5,10 @@ namespace App\Enums;
 
 enum Area: string
 {
-    case COLOMBIA = 'COLOMBIA';
-    case USA = 'USA';
+    case ADMINISTRATCION = 'Administración';
+    case FINANCIERA = 'Financiera';
+    case COMPRAS = 'Compras';
+    case INFRAESTRUCTURA = 'Infraestructura';
+    case TALENTOHUMANO = 'Talento Humano';
+    case SEVICIOSVARIOS = 'Servicios Varios';
 }
