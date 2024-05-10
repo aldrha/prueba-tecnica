@@ -1,1 +1,161 @@
-<p>employees-add works!</p>
+<section class="relative isolate overflow-hidden bg-white px-6 py-10 sm:py-10 lg:px-8 shadow-md">
+    <h1 class="py-3 font-bold text-2xl">Formulario para registrar empleado</h1>
+    <form [formGroup]="employeesForm">
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+                <label for="lastname" class="label-input">Primer Apellido:</label>
+                <input type="text" formControlName="lastname" class="form-input" placeholder="Perez" required />
+                <div *ngIf="!employeesForm.lastname.touched && employeesForm.lastname.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.lastname?.errors?.['required']">
+                        <span class="font-medium">El campo es requerido</span>
+                    </div>
+                    <div *ngIf="employeesForm.lastname?.errors?.['maxlength']">
+                        <span class="font-medium">El campo no debe sobrepasar los 20 caracteres</span>
+                    </div>
+                    <div *ngIf="employeesForm.lastname?.errors?.['pattern']">
+                        <span class="font-medium">El debe ser en mayusculas y solo contener letras</span>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <label for="second_surname" class="label-input">Segundo Apellido:</label>
+                <input type="text" formControlName="second_surname" class="form-input" placeholder="Rojas" required />
+                <div *ngIf="!employeesForm.second_surname.touched && employeesForm.second_surname.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.second_surname?.errors?.['required']">
+                        <span class="font-medium">El campo es requerido</span>
+                    </div>
+                    <div *ngIf="employeesForm.second_surname?.errors?.['maxlength']">
+                        <span class="font-medium">El campo no debe sobrepasar los 20 caracteres</span>
+                    </div>
+                    <div *ngIf="employeesForm.second_surname?.errors?.['pattern']">
+                        <span class="font-medium">El debe ser en mayusculas y solo contener letras</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="name" class="label-input">Primer Nombre:</label>
+                <input type="text" formControlName="name" class="form-input" placeholder="John" required />
+                <div *ngIf="!employeesForm.name.touched && employeesForm.name.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.name?.errors?.['required']">
+                        <span class="font-medium">El campo es requerido</span>
+                    </div>
+                    <div *ngIf="employeesForm.name?.errors?.['maxlength']">
+                        <span class="font-medium">El campo no debe sobrepasar los 20 caracteres</span>
+                    </div>
+                    <div *ngIf="employeesForm.name?.errors?.['pattern']">
+                        <span class="font-medium">El debe ser en mayusculas y solo contener letras</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="middlename" class="label-input">Otros Nombres:</label>
+                <input type="text" formControlName="middlename" class="form-input" placeholder="Doe" required />
+                <div *ngIf="!employeesForm.middlename.touched && employeesForm.middlename.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.middlename?.errors?.['maxlength']">
+                        <span class="font-medium">El campo no debe sobrepasar los 20 caracteres</span>
+                    </div>
+                    <div *ngIf="employeesForm.middlename?.errors?.['pattern']">
+                        <span class="font-medium">El debe ser en mayusculas y solo contener letras</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="label-input">País de Empleo</label>
+                <select id="country_employment" formControlName="country_employment" class="form-input">
+                    <option selected>Selecciona una opción</option>
+                    <option value="COLOMBIA">COLOMBIA</option>
+                    <option value="USA">USA</option>
+                </select>
+                <div *ngIf="!employeesForm.country_employment.touched && employeesForm.country_employment.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.country_employment?.errors?.['required']">
+                        <span class="font-medium">El campo es requerido</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="type_document" class="label-input">Tipo de Documento</label>
+                <select id="type_document" formControlName="type_document" class="form-input">
+                    <option selected>Selecciona una opción</option>
+                    <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                    <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                    <option value="Permiso Especial">Permiso Especial</option>
+                </select>
+                <div *ngIf="!employeesForm.type_document.touched && employeesForm.type_document.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.type_document?.errors?.['required']">
+                        <span class="font-medium">El campo es requerido</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="document_number" class="label-input">Número de Documento</label>
+                <input type="text" id="document_number" formControlName="document_number" class="form-input"
+                    placeholder="V-6545642187" required />
+                <div *ngIf="!employeesForm.document_number.touched && employeesForm.document_number.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.document_number?.errors?.['required']">
+                        <span class="font-medium">El campo es requerido</span>
+                    </div>
+                    <div *ngIf="employeesForm.document_number?.errors?.['maxlength']">
+                        <span class="font-medium">El campo no debe sobrepasar los 20 caracteres</span>
+                    </div>
+                    <div *ngIf="employeesForm.document_number?.errors?.['pattern']">
+                        <span class="font-medium">El debe contener letras, numero y - </span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="area" class="label-input">Area</label>
+                <select id="area" formControlName="area" class="form-input">
+                    <option selected>Selecciona una opción</option>
+                    <option value="Administración">Administración</option>
+                    <option value="Financiera">Financiera</option>
+                    <option value="Compras">Compras</option>
+                    <option value="Infraestructura">Infraestructura</option>
+                    <option value="Talento Humano">Talento Humano</option>
+                    <option value="Servicios Varios">Servicios Varios</option>
+                </select>
+                <div *ngIf="!employeesForm.area.touched && employeesForm.area.invalid"
+                    class="mt-2 text-sm text-red-600 dark:text-red-500">
+                    <div *ngIf="employeesForm.area?.errors?.['required']">
+                        <span class="font-medium">El campo es requerido</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-6">
+            <label for="admission_date" class="label-input">Fecha de Ingreso</label>
+            <input type="date" formControlName="admission_date" class="form-input" max="{{dateAdmission}}"
+                min="{{dateMonthAdminission}}" />
+            <div *ngIf="!employeesForm.admission_date.touched && employeesForm.admission_date.invalid"
+                class="mt-2 text-sm text-red-600 dark:text-red-500">
+                <div *ngIf="employeesForm.admission_date?.errors?.['required']">
+                    <span class="font-medium">El campo es requerido</span>
+                </div>
+                <div *ngIf="employeesForm.admission_date?.errors?.['pattern']">
+                    <span class="font-medium">El campo debe de tener un formato valido YYYY-MM-DD</span>
+                </div>
+            </div>
+
+        </div>
+        {{ employeesForm.controls["lastname"].value | json}}
+        {{ employeesForm.controls["second_surname"].value | json}}
+        {{ employeesForm.controls["name"].value | json}}
+        {{ employeesForm.controls["middlename"].value | json}}
+        {{ employeesForm.controls["country_employment"].value | json}}
+        {{ employeesForm.controls["type_document"].value | json}}
+        {{ employeesForm.controls["document_number"].value | json}}
+        {{ employeesForm.controls["admission_date"].value | json}}
+        {{ employeesForm.controls["area"].value | json}}
+        <button (click)="submit()"
+            [disabled]="!employeesForm.valid || employeesForm.disabled"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    </form>
+</section>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
- 
+
 import { EmployeesComponent } from './employees.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
 import { EmployeesAddComponent } from './employees-add/employees-add.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
         data: {
           action: 'update'
         }
-      } 
+      }
     ]
   }
 ];
@@ -36,4 +36,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class UserRoutingModule { }
+export class EmployeesRoutingModule { }

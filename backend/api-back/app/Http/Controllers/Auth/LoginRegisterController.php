@@ -21,9 +21,10 @@ class LoginRegisterController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => 'failed',
+                'code' => 401,
                 'message' => 'Validation Error!',
                 'data' => $validate->errors(),
-            ], 403);
+            ], 401);
         }
 
         $user = User::create([
@@ -37,6 +38,7 @@ class LoginRegisterController extends Controller
 
         $response = [
             'status' => 'success',
+            'code' => 201,
             'message' => 'User is created successfully.',
             'data' => $data,
         ];
@@ -54,9 +56,10 @@ class LoginRegisterController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => 'failed',
+                'code' => 401,
                 'message' => 'Validation Error!',
                 'data' => $validate->errors(),
-            ], 403);
+            ], 401);
         }
 
         // Check email exist
@@ -66,6 +69,7 @@ class LoginRegisterController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => 'failed',
+                'code' => 401,
                 'message' => 'Invalid credentials'
             ], 401);
         }
@@ -75,6 +79,7 @@ class LoginRegisterController extends Controller
 
         $response = [
             'status' => 'success',
+            'code' => 200,
             'message' => 'User is logged in successfully.',
             'data' => $data,
         ];
@@ -87,6 +92,7 @@ class LoginRegisterController extends Controller
         auth()->user()->tokens()->delete();
         return response()->json([
             'status' => 'success',
+            'code' => 200,
             'message' => 'User is logged out successfully'
         ], 200);
     }

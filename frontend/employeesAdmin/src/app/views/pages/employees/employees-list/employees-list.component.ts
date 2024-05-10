@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-employees-list',
   templateUrl: './employees-list.component.html',
   styleUrls: ['./employees-list.component.css']
 })
-export class EmployeesListComponent {
+export class EmployeesListComponent implements OnInit {
+
+
+  ngOnInit (): void {
+
+  }
 
 }

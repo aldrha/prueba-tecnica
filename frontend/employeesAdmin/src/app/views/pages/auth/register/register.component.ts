@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RegisterForm } from './register.form'; 
+import { RegisterForm } from './register.form';
 import { AuthService } from 'src/app/core/services/auth.services';
 import { ResponseModel } from 'src/app/core/model/response.model';
 import { RegisterModel, RegisterRequestModel } from 'src/app/core/model/register.model';
@@ -14,12 +14,12 @@ import Swal from 'sweetalert2';
 export class RegisterComponent implements OnInit {
   returnUrl: any;
   registerForm: RegisterForm;
-  registerModel: RegisterRequestModel; 
+  registerModel: RegisterRequestModel;
   sessionData: any = {};
 
-  constructor(private _authService: AuthService,
+  constructor (private _authService: AuthService,
     private router: Router,
-    private _activatedRoute: ActivatedRoute, 
+    private _activatedRoute: ActivatedRoute,
   ) {
     this.registerForm = new RegisterForm({
       name: '',
@@ -32,39 +32,21 @@ export class RegisterComponent implements OnInit {
     localStorage.setItem('token', '');
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.returnUrl =
-    this._activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+      this._activatedRoute.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  onRegister( ) { 
+  onRegister () {
     let user = new RegisterRequestModel();
     user.name = this.registerForm.controls["name"].value;
     user.email = this.registerForm.controls["email"].value;
     user.password = this.registerForm.controls["password"].value;
     user.password_confirmation = this.registerForm.controls["password_confirmation"].value;
 
-    // this._authService.register(user).subscribe((response) => {
-    //   if (response.code == 200) {
-    //     localStorage.setItem(
-    //       'token',
-    //       response.data.token == undefined ? '' : response.data.token
-    //     );
-    //     localStorage.setItem('data', JSON.stringify(response.data.user));
-    //     localStorage.setItem('isLoggedin', 'true');
-    //     if (localStorage.getItem('isLoggedin')) {
-    //       this.router.navigate([this.returnUrl]);
-    //     }
-    //   }
-    //   else if (response.code == 403) {
-    //     console.log(response.error);
-    //     // Swal.fire('Error!', response.error 'error');
-    //   }
-    // })
-
     this._authService.register(user).subscribe({
       next: (response) => {
-       
+
         if (response.code == 200) {
           localStorage.setItem(
             'token',
@@ -77,7 +59,7 @@ export class RegisterComponent implements OnInit {
           }
         }
         if (response.code == 401) {
-    
+
           // Swal.fire('Error!', response.error 'error');
         }
       },
@@ -85,14 +67,14 @@ export class RegisterComponent implements OnInit {
         console.log(error.error);
         if (error.error.code == 401) {
           let errors = [];
-          if(error.error.data["name"]){
-            errors.push(error.error.data["name"][0]) 
+          if (error.error.data["name"]) {
+            errors.push(error.error.data["name"][0]);
           }
-          if(error.error.data["email"]){
-            errors.push(error.error.data["email"][0]) 
+          if (error.error.data["email"]) {
+            errors.push(error.error.data["email"][0]);
           }
-          if(error.error.data["password"]){
-            errors.push(error.error.data["password"][0]) 
+          if (error.error.data["password"]) {
+            errors.push(error.error.data["password"][0]);
           }
           Swal.fire('Error!', JSON.stringify(errors), 'error');
         }

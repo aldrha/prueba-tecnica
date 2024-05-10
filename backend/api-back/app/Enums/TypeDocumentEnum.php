@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Enums;
 
-class TypeDocumentEnum extends BaseEnum   
+class TypeDocumentEnum extends BaseEnum
 {
 
     public const CEDULADECIUDADANIA = 'Cédula de Ciudadanía';

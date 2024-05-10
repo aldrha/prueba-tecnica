@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { EmployeesComponent } from './employees.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
 import { EmployeesAddComponent } from './employees-add/employees-add.component';
+import { EmployeesRoutingModule } from './employees-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -13,7 +15,10 @@ import { EmployeesAddComponent } from './employees-add/employees-add.component';
     EmployeesAddComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    EmployeesRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class EmployeesModule { }

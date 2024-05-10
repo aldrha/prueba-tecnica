@@ -3,7 +3,7 @@
 namespace App\Enums;
 
 
-class AreaEnum extends BaseEnum  
+class AreaEnum extends BaseEnum
 {
     public const ADMINISTRATCION = 'Administración';
     public const FINANCIERA = 'Financiera';

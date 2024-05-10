@@ -3,9 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-employees',
   template: `
-    <p>
-      employees works!
-    </p>
+    <router-outlet></router-outlet>    
   `,
   styles: [
   ]

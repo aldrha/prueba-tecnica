@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LoginForm } from './login.form';
 import { LoginRequestModel, LoginResponseModel } from 'src/app/core/model/login.model';
 import { AuthService } from 'src/app/core/services/auth.services';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -13,13 +13,13 @@ import Swal from 'sweetalert2';
 export class LoginComponent implements OnInit {
   returnUrl: any;
   loginForm: LoginForm;
-  loginModel: LoginResponseModel ; 
+  loginModel: LoginResponseModel;
   sessionData: any = {};
 
-  constructor(
+  constructor (
     private _authService: AuthService,
     private _router: Router,
-    private _activatedRoute: ActivatedRoute, 
+    private _activatedRoute: ActivatedRoute,
   ) {
     this.loginForm = new LoginForm({
       email: '',
@@ -30,13 +30,13 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('token', '');
   }
 
-  ngOnInit(): void {
-     
+  ngOnInit (): void {
+
     this.returnUrl =
       this._activatedRoute.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  onLoggedin(e: Event) {
+  onLoggedin (e: Event) {
     e.preventDefault();
     this.loginModel = this.loginForm.value;
     this._authService.login(this.loginForm.value).subscribe({
@@ -54,11 +54,19 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (error) => {
-        if (error.code == 401) {
-          Swal.fire('Login!', error.error.message, 'error');
+        console.log(error.error);
+        if (error.error.code == 401) {
+          let errors = [];
+          if (error.error.data["email"]) {
+            errors.push(error.error.data["email"][0]);
+          }
+          if (error.error.data["password"]) {
+            errors.push(error.error.data["password"][0]);
+          }
+          Swal.fire('Error!', JSON.stringify(errors), 'error');
         }
       },
     });
   }
- 
+
 }

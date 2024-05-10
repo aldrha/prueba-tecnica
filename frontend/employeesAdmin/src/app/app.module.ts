@@ -11,6 +11,7 @@ import {
 } from '@angular/common/http';
 import { DefaultOauthInterceptor } from './core/interceptors/default.interceptor';
 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -21,7 +22,7 @@ import { DefaultOauthInterceptor } from './core/interceptors/default.interceptor
     AppRoutingModule,
     LayoutModule,
   ],
- 
+
   providers: [
     HttpClient,
     [

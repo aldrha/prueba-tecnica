@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "953bc42e-3aa2-4339-9b07-fb24eca5edab",
+		"name": "ApiPruebaTecnica",
+		"description": "Listado de endpoint para usar el aplicativo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "14354989"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registro de Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Enzo",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "enzo.1@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "3|f0gJof6qTJ0WQ5m8c2AMJ17sg3AYVTNfSuRPPpOB9e9514e2"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "aldrha95@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/logout"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "1|4UujyN4z1aKU1gknXEIi8M9FbKXZMkzyX37dljkf60e5c4b8"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/employees/4"
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "1|4UujyN4z1aKU1gknXEIi8M9FbKXZMkzyX37dljkf60e5c4b8"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "Store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "1|4UujyN4z1aKU1gknXEIi8M9FbKXZMkzyX37dljkf60e5c4b8"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "lastname",
+									"value": "QUINTERO",
+									"type": "text"
+								},
+								{
+									"key": "second_surname",
+									"value": "CASTILLO",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "MARIA LIONZA",
+									"type": "text"
+								},
+								{
+									"key": "middlename",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "country_employment",
+									"value": "COLOMBIA",
+									"type": "text"
+								},
+								{
+									"key": "type_document",
+									"value": "Cédula de Ciudadanía",
+									"type": "text"
+								},
+								{
+									"key": "document_number",
+									"value": "V-1036260420",
+									"type": "text"
+								},
+								{
+									"key": "admission_date",
+									"value": "2024-05-08",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "Compras",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/employees/"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "1|4UujyN4z1aKU1gknXEIi8M9FbKXZMkzyX37dljkf60e5c4b8"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "_me",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "QUINTERO",
+									"type": "text"
+								},
+								{
+									"key": "second_surname",
+									"value": "CASTILLO",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "MARIA",
+									"type": "text"
+								},
+								{
+									"key": "middlename",
+									"value": "LIONZA",
+									"type": "text"
+								},
+								{
+									"key": "country_employment",
+									"value": "COLOMBIA",
+									"type": "text"
+								},
+								{
+									"key": "type_document",
+									"value": "Cédula de Ciudadanía",
+									"type": "text"
+								},
+								{
+									"key": "document_number",
+									"value": "V-1036260420",
+									"type": "text"
+								},
+								{
+									"key": "admission_date",
+									"value": "2024-05-08",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "Administración",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/employees/101"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "1|4UujyN4z1aKU1gknXEIi8M9FbKXZMkzyX37dljkf60e5c4b8"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/employees/99"
+					},
+					"response": []
+				}
+			],
+			"description": "Se debe registrar un usuario y luego hacer login para utilizar los endpoint de empleados"
+		}
+	]
+}

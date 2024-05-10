@@ -9,20 +9,27 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () =>
       import('./views/pages/auth/auth.module').then((m) => m.AuthModule),
-  }, 
+  },
   {
     path: '',
     component: BaseComponent,
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./views/pages/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
+      },
+      {
         path: 'employees',
         loadChildren: () =>
           import('./views/pages/employees/employees.module').then(
             (m) => m.EmployeesModule
           ),
-      },      
-      { path: '', redirectTo: 'employees', pathMatch: 'full' },
+      },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
   {
