@@ -3,8 +3,8 @@
 namespace App\Enums;
 
 
-enum CountryEmployment: string
+class CountryEmploymentEnum extends BaseEnum  
 {
-    case COLOMBIA = 'COLOMBIA';
-    case USA = 'USA';
+    public const COLOMBIA = 'COLOMBIA';
+    public const USA = 'USA';
 }

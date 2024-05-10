@@ -10,17 +10,17 @@ Route::controller(LoginRegisterController::class)->group(function () {
 });
 
 Route::controller(EmployeeController::class)->group(function () {
-    Route::get('/employees', 'index')->name('employees.index');
-    Route::get('/employees/{id}', 'show')->name('employees.show');
+    Route::get('/employees/{filter?}', 'index')->name('employees.index');
+    Route::get('/employees/{employee}', 'show')->name('employees.show');
     Route::get('/employees/search/{name}', 'search')->name('employees.search');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LoginRegisterController::class, 'logout']);
-
+ 
     Route::controller(EmployeeController::class)->group(function () {
         Route::post('/employees', 'store')->name('employees.store');
-        Route::post('/employees/{id}', 'update')->name('employees.update');
-        Route::delete('/employees/{id}', 'destroy')->name('employees.destroy');
+        Route::put('/employees/{id}', 'update')->name('employees.update');
+        Route::delete('/employees/{employee}', 'destroy')->name('employees.destroy');
     });
 });

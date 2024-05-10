@@ -3,12 +3,12 @@
 namespace App\Enums;
 
 
-enum Area: string
+class AreaEnum extends BaseEnum  
 {
-    case ADMINISTRATCION = 'Administración';
-    case FINANCIERA = 'Financiera';
-    case COMPRAS = 'Compras';
-    case INFRAESTRUCTURA = 'Infraestructura';
-    case TALENTOHUMANO = 'Talento Humano';
-    case SEVICIOSVARIOS = 'Servicios Varios';
+    public const ADMINISTRATCION = 'Administración';
+    public const FINANCIERA = 'Financiera';
+    public const COMPRAS = 'Compras';
+    public const INFRAESTRUCTURA = 'Infraestructura';
+    public const TALENTOHUMANO = 'Talento Humano';
+    public const SEVICIOSVARIOS = 'Servicios Varios';
 }

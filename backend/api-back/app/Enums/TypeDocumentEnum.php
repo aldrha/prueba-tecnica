@@ -1,13 +1,11 @@
 <?php
-
 namespace App\Enums;
 
-
-enum TypeDocument: string
+class TypeDocumentEnum extends BaseEnum   
 {
 
-    case CEDULADECIUDADANIA = 'Cédula de Ciudadanía';
-    case CEDULADEEXTRANJERIA = 'Cédula de Extranjería';
-    case PASAPORTE = 'Pasaporte';
-    case PERMISOESPECIAL = 'Permiso Especial';
+    public const CEDULADECIUDADANIA = 'Cédula de Ciudadanía';
+    public const CEDULADEEXTRANJERIA = 'Cédula de Extranjería';
+    public const PASAPORTE = 'Pasaporte';
+    public const PERMISOESPECIAL = 'Permiso Especial';
 }

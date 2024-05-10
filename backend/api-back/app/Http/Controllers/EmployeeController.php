@@ -2,34 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Area;
-use App\Enums\CountryEmployment;
-use App\Enums\TypeDocument;
-use App\Models\Employee;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Enum;
+use App\Models\Employee;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::latest()->get();
+        $filter = $request->query('filter'); 
+
+       
+        if (!empty($filter)) {
+            $employees = Employee::where('employees.name', 'like', '%'.$filter.'%')
+            ->orWhere('employees.middlename', 'like', '%'.$filter.'%')
+            ->orWhere('employees.lastname', 'like', '%'.$filter.'%')
+            ->orWhere('employees.second_surname', 'like', '%'.$filter.'%')
+            ->orWhere('employees.country_employment', 'like', '%'.$filter.'%')
+            ->orWhere('employees.type_document', 'like', '%'.$filter.'%')
+            ->orWhere('employees.document_number', 'like', '%'.$filter.'%')
+            ->orWhere('employees.email', 'like', '%'.$filter.'%')
+            ->orWhere('employees.status', 'like', '%'.$filter.'%')
+            ->get();
+        } else {
+            $employees = Employee::latest()->get();
+        } 
+ 
+        $page = Paginator::resolveCurrentPage() ?: 1;
+        $perPage = 10;
+        $employees = new LengthAwarePaginator(
+            $employees->forPage($page, $perPage), $employees->count(), $perPage, $page, ['path' => Paginator::resolveCurrentPath()]
+        );
 
         if (is_null($employees->first())) {
             return response()->json([
                 'status' => 'failed',
+                'code' => 200,
                 'message' => 'No hay empleados registrados!',
             ], 200);
         }
 
         $response = [
             'status' => 'success',
+            'code' => 200,
             'message' => 'Emplados listados con éxito.',
-            'data' => $employees,
+            'response' => $employees,
         ];
 
         return response()->json($response, 200);
@@ -38,38 +61,23 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        $validate = Validator::make($request->all(), [
-            'lastname' => 'required|alpha:ascii|max:20',
-            'second_surname' => 'required|alpha:ascii|max:20',
-            'name' => 'required|alpha:ascii|max:20',
-            'middlename' => 'sometimes|required|alpha:ascii|max:50',
-            'country_employment' => ['required', new Enum(CountryEmployment::class)],
-            'type_document' => ['required', new Enum(TypeDocument::class)],
-            'document_number' => 'required|string|regex:/^[A-Za-z0-9\-]+$/|unique:employees,document_number|max:20',
-            'email' => 'required|email|unique:employess,email|max:300',
-            'admission_date' => 'required|date|before_or_equal:today - 1 month',
-            'area' => ['required', new Enum(Area::class)],
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Validation Error!',
-                'data' => $validate->errors(),
-            ], 403);
-        }
-
-        $employee = Employee::create($request->all());
+       
+        $validate = $request->validated();  
+        $employeeNew = new Employee();
+        $validate['email'] = $employeeNew->generateEmailAdress($request->name, $request->lastname, $request->country_employment);
+     
+        $employee = Employee::create($validate); 
 
         $response = [
             'status' => 'success',
+            'code' => 201,
             'message' => 'Empleado registrado con éxito',
             'data' => $employee,
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, 201);
     }
 
     /**
@@ -77,19 +85,21 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        $employee = Employee::find($employee);
-
-        if (is_null($employee)) {
+       
+        $employeeData = Employee::find($employee->id);
+        if (is_null($employeeData)) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Employee is not found!',
-            ], 200);
+                'code' => 404,
+                'message' => 'Emplado no encontrado!',
+            ], 404);
         }
 
         $response = [
             'status' => 'success',
-            'message' => 'Employee is retrieved successfully.',
-            'data' => $employee,
+            'code' => 200,
+            'message' => 'Datos del empleado obtenidos éxitosamente.',
+            'data' => $employeeData,
         ];
 
         return response()->json($response, 200);
@@ -98,41 +108,31 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, $id)
     {
-        $validate = Validator::make($request->all(), [
-            'lastname' => 'required|alpha:ascii|max:20',
-            'second_surname' => 'required|alpha:ascii|max:20',
-            'name' => 'required|alpha:ascii|max:20',
-            'middlename' => 'sometimes|required|alpha:ascii|max:50',
-            'country_employment' => ['required', new Enum(CountryEmployment::class)],
-            'type_document' => ['required', new Enum(TypeDocument::class)],
-            'document_number' => 'required|string|regex:/^[A-Za-z0-9\-]+$/|max:20unique:employees,document_number,' . $employee,
-            'email' => 'required|email|max:300|unique:employess,email,' . $employee,
-            'admission_date' => 'required|date|before_or_equal:today - 1 month',
-            'area' => ['required', new Enum(Area::class)],
-        ]);
+        
+        $validate = $request->validated();
 
-        if ($validate->fails()) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Validation Error!',
-                'data' => $validate->errors(),
-            ], 403);
-        }
-
+        $employee = Employee::find($id);
         if (is_null($employee)) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Employee is not found!',
-            ], 200);
+                'code' => 404,
+                'message' => 'Emplado no encontrado!',
+            ], 404);
         }
 
-        $employee->update($request->all());
+        if($validate['name'] != $employee->name || $validate['lastname'] != $employee->lastname || $validate['country_employment'] != $employee->country_employment){
+            $validate['email'] = $employee->generateEmailAdress($request->name, $request->lastname, $request->country_employment);
+            $employee->update($validate);
+        }else{
+            $employee->fill($validate)->save();
+        } 
 
         $response = [
             'status' => 'success',
-            'message' => 'Employee is updated successfully.',
+            'code' => 200,
+            'message' => 'Empleado modificado éxitosamente.',
             'data' => $employee,
         ];
 
@@ -147,14 +147,16 @@ class EmployeeController extends Controller
         if (is_null($employee)) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Employee is not found!',
-            ], 200);
+                'code' => 404,
+                'message' => 'Emplado no encontrado!',
+            ], 404);
         }
 
-        Employee::destroy($employee);
+        $employee->delete();
         return response()->json([
             'status' => 'success',
-            'message' => 'Employee is deleted successfully.'
+            'code' => 200,
+            'message' => 'Empleado eliminado éxitosamente.',
         ], 200);
     }
 
@@ -172,13 +174,15 @@ class EmployeeController extends Controller
         if (is_null($employees->first())) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'No Employee found!',
+                'code' => 404,
+                'message' => 'Empleado no encontrado!',
             ], 200);
         }
 
         $response = [
             'status' => 'success',
-            'message' => 'Employees are retrieved successfully.',
+            'code' => 200,
+            'message' => 'Los empleados se recuperaron con éxito.',
             'data' => $employees,
         ];
 

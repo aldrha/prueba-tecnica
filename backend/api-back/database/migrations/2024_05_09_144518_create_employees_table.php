@@ -19,11 +19,10 @@ return new class extends Migration
             $table->string('middlename', 50)->nullable();
             $table->enum('country_employment', ['COLOMBIA', 'USA']);
             $table->enum('type_document', ['Cédula de Ciudadanía', 'Cédula de Extranjería', 'Pasaporte', 'Permiso Especial']);
-            $table->string('document_number', 20);
-            $table->text('email', 300);
+            $table->string('document_number', 20)->unique(false);
+            $table->string('email', 300)->unique(false);
             $table->date('admission_date');
-            $table->enum('area', ['Administración', 'Financiera', 'Compras', 'Infraestructura', 'Operación', 'Talento 
-            Humano', 'Servicios Varios']);
+            $table->enum('area', ['Administración', 'Financiera', 'Compras', 'Infraestructura', 'Operación', 'Talento Humano', 'Servicios Varios']);
             $table->integer('status')->default(1)->comment('1: Activo');
             $table->timestamps();
         });
