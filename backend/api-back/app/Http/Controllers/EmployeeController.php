@@ -16,29 +16,33 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->query('filter'); 
+        $filter = $request->query('filter');
 
-       
+
         if (!empty($filter)) {
-            $employees = Employee::where('employees.name', 'like', '%'.$filter.'%')
-            ->orWhere('employees.middlename', 'like', '%'.$filter.'%')
-            ->orWhere('employees.lastname', 'like', '%'.$filter.'%')
-            ->orWhere('employees.second_surname', 'like', '%'.$filter.'%')
-            ->orWhere('employees.country_employment', 'like', '%'.$filter.'%')
-            ->orWhere('employees.type_document', 'like', '%'.$filter.'%')
-            ->orWhere('employees.document_number', 'like', '%'.$filter.'%')
-            ->orWhere('employees.email', 'like', '%'.$filter.'%')
-            ->orWhere('employees.status', 'like', '%'.$filter.'%')
-            ->get();
+            $employees = Employee::where('employees.name', 'like', '%' . $filter . '%')
+                ->orWhere('employees.middlename', 'like', '%' . $filter . '%')
+                ->orWhere('employees.lastname', 'like', '%' . $filter . '%')
+                ->orWhere('employees.second_surname', 'like', '%' . $filter . '%')
+                ->orWhere('employees.country_employment', 'like', '%' . $filter . '%')
+                ->orWhere('employees.type_document', 'like', '%' . $filter . '%')
+                ->orWhere('employees.document_number', 'like', '%' . $filter . '%')
+                ->orWhere('employees.email', 'like', '%' . $filter . '%')
+                ->orWhere('employees.status', 'like', '%' . $filter . '%')
+                ->get();
         } else {
-            $employees = Employee::latest()->get();
-        } 
- 
-        $page = Paginator::resolveCurrentPage() ?: 1;
-        $perPage = 10;
-        $employees = new LengthAwarePaginator(
-            $employees->forPage($page, $perPage), $employees->count(), $perPage, $page, ['path' => Paginator::resolveCurrentPath()]
-        );
+            $employees = Employee::orderBy('id', 'desc')->get();
+        }
+
+        // $page = Paginator::resolveCurrentPage() ?: 1; //TODO: ajuste
+        // $perPage = 10;
+        // $employees = new LengthAwarePaginator(
+        //     $employees->forPage($page, $perPage),
+        //     $employees->count(),
+        //     $perPage,
+        //     $page,
+        //     ['path' => Paginator::resolveCurrentPath()]
+        // );
 
         if (is_null($employees->first())) {
             return response()->json([
@@ -52,7 +56,7 @@ class EmployeeController extends Controller
             'status' => 'success',
             'code' => 200,
             'message' => 'Emplados listados con éxito.',
-            'response' => $employees,
+            'data' => $employees,
         ];
 
         return response()->json($response, 200);
@@ -63,12 +67,12 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-       
-        $validate = $request->validated();  
+
+        $validate = $request->validated();
         $employeeNew = new Employee();
         $validate['email'] = $employeeNew->generateEmailAdress($request->name, $request->lastname, $request->country_employment);
-     
-        $employee = Employee::create($validate); 
+
+        $employee = Employee::create($validate);
 
         $response = [
             'status' => 'success',
@@ -85,7 +89,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-       
+
         $employeeData = Employee::find($employee->id);
         if (is_null($employeeData)) {
             return response()->json([
@@ -110,7 +114,7 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        
+
         $validate = $request->validated();
 
         $employee = Employee::find($id);
@@ -122,12 +126,12 @@ class EmployeeController extends Controller
             ], 404);
         }
 
-        if($validate['name'] != $employee->name || $validate['lastname'] != $employee->lastname || $validate['country_employment'] != $employee->country_employment){
+        if ($validate['name'] != $employee->name || $validate['lastname'] != $employee->lastname || $validate['country_employment'] != $employee->country_employment) {
             $validate['email'] = $employee->generateEmailAdress($request->name, $request->lastname, $request->country_employment);
             $employee->update($validate);
-        }else{
+        } else {
             $employee->fill($validate)->save();
-        } 
+        }
 
         $response = [
             'status' => 'success',

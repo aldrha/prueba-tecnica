@@ -10,12 +10,13 @@ import { environment } from '../../../environments/environment';
 export class ApiService {
   private _apiUrl: string = environment.server;
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor (private _httpClient: HttpClient) { }
 
-  public get(
+  public get (
     url: string,
-    params: HttpParams | { [key: string]: string | number | boolean } = {}
+    params: HttpParams | { [key: string]: string | number | boolean; } = {}
   ): Observable<any> {
+    console.log(url, params);
     return this._httpClient
       .get<any>(this._apiUrl + url, {
         params:
@@ -24,9 +25,9 @@ export class ApiService {
       .pipe(catchError((error: any) => this._handleError(this, error)));
   }
 
-  public getUrlOutside(
+  public getUrlOutside (
     url: string,
-    params: HttpParams | { [key: string]: string | number | boolean } = {}
+    params: HttpParams | { [key: string]: string | number | boolean; } = {}
   ): Observable<any> {
     return this._httpClient
       .get<any>(url, {
@@ -36,10 +37,10 @@ export class ApiService {
       .pipe(catchError((error: any) => this._handleError(this, error)));
   }
 
-  public post(
+  public post (
     url: string,
     body: any,
-    params: HttpParams | { [key: string]: string | number | boolean } = {}
+    params: HttpParams | { [key: string]: string | number | boolean; } = {}
   ): Observable<any> {
     return this._httpClient
       .post<any>(this._apiUrl + url, body, {
@@ -49,10 +50,10 @@ export class ApiService {
       .pipe(catchError((error: any) => this._handleError(this, error)));
   }
 
-  public put(
+  public put (
     url: string,
     body: any,
-    params: HttpParams | { [key: string]: string | number | boolean } = {}
+    params: HttpParams | { [key: string]: string | number | boolean; } = {}
   ): Observable<any> {
     return this._httpClient
       .put<any>(this._apiUrl + url, body, {
@@ -62,10 +63,10 @@ export class ApiService {
       .pipe(catchError((error: any) => this._handleError(this, error)));
   }
 
-  public delete(
+  public delete (
     url: string,
     body: any,
-    params: HttpParams | { [key: string]: string | number | boolean } = {}
+    params: HttpParams | { [key: string]: string | number | boolean; } = {}
   ): Observable<any> {
     return this._httpClient
       .request<any>('delete', this._apiUrl + url, {
@@ -76,9 +77,9 @@ export class ApiService {
       .pipe(catchError((error: any) => this._handleError(this, error)));
   }
 
-  public deleteByParams(
+  public deleteByParams (
     url: string,
-    params: HttpParams | { [key: string]: string | number | boolean } = {}
+    params: HttpParams | { [key: string]: string | number | boolean; } = {}
   ): Observable<any> {
     return this._httpClient
       .request<any>('delete', this._apiUrl + url, {
@@ -87,13 +88,13 @@ export class ApiService {
       })
       .pipe(catchError((error: any) => this._handleError(this, error)));
   }
-  private _handleError(_parent: ApiService, error: any): Observable<never> {
+  private _handleError (_parent: ApiService, error: any): Observable<never> {
     //this._notifyService.showNotification('error', 'server response error');
     return throwError(error);
   }
 
-  private _toStringParams(params: Object): HttpParams {
-    let refactoParams: { [key: string]: string } = {};
+  private _toStringParams (params: Object): HttpParams {
+    let refactoParams: { [key: string]: string; } = {};
 
     Object.entries(params).forEach(([key, value]) => {
       if (typeof value !== 'string') {
@@ -106,7 +107,7 @@ export class ApiService {
     return new HttpParams({ fromObject: refactoParams });
   }
 
-  public formatDateUTC(date: string | number | Date) {
+  public formatDateUTC (date: string | number | Date) {
     const options = {
       timeZone: 'UTC',
     };
@@ -116,9 +117,9 @@ export class ApiService {
     const [month, day, year] = datePart.split('/');
     const formattedDay = this.addZero(day);
     const formattedMonth = this.addZero(month);
-    return `${formattedMonth}/${formattedDay}/${year}`;
+    return `${ formattedMonth }/${ formattedDay }/${ year }`;
   }
-  public addZero(value: string | []) {
+  public addZero (value: string | []) {
     if (value.length === 1) {
       return '0' + value;
     }

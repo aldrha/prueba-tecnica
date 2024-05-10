@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ApiService } from "../API/api.service";
 import { Observable } from "rxjs";
 import { ResponseModel } from "../model/response.model";
-import { EmployeeModel } from "../model/employee.model";
+import { EmployeeModel, ResponsePaginate } from "../model/employee.model";
 
 
 @Injectable({
@@ -17,8 +17,9 @@ export class EmployeesService {
         this.sessionData = JSON.parse(localStorage.getItem('data') || '{}');
     }
 
-    getAll (service?: number): Observable<ResponseModel<EmployeeModel[]>> {
-        return this._apiService.get(`/employees/list`);
+    getAll (search?: string): Observable<ResponseModel<EmployeeModel[]>> {
+        let filter = typeof search === "string" ? search : "";
+        return this._apiService.get(`/employees/list?filter=${ filter }`);
     }
 
     add (employee: EmployeeModel): Observable<ResponseModel<EmployeeModel>> {
@@ -29,9 +30,8 @@ export class EmployeesService {
         return this._apiService.put('/employees/' + id, employee);
     }
 
-    delete (id: number): Observable<ResponseModel<boolean>> {
-        let data = { id: id };
-        return this._apiService.delete('/employees', data);
+    delete (employee: EmployeeModel): Observable<ResponseModel<boolean>> {
+        return this._apiService.delete('/employees/' + employee.id, employee);
     }
 
     getOne (id: number): Observable<ResponseModel<EmployeeModel>> {

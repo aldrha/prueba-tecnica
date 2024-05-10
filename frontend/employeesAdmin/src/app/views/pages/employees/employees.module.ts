@@ -5,6 +5,7 @@ import { EmployeesListComponent } from './employees-list/employees-list.componen
 import { EmployeesAddComponent } from './employees-add/employees-add.component';
 import { EmployeesRoutingModule } from './employees-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
@@ -19,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     EmployeesRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxDatatableModule
   ]
 })
 export class EmployeesModule { }
